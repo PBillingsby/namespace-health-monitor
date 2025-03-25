@@ -58,11 +58,14 @@ export function calculateHealthMetrics(
   const versionConsistency = Math.max(0, 10 - uniqueVersions); // Fewer versions is better
 
   // 5. Size Stability: How consistent is the message size?
-  const sizes = messages.map((m) => m.size);
+  const sizes = messages
+  .map((m) => m.size)
+  .filter((size): size is number => typeof size === 'number');
+
   const avgSize = sizes.length > 0 
     ? sizes.reduce((sum, size) => sum + size, 0) / sizes.length
     : 0;
-    
+
   const sizeVariance = sizes.length > 0
     ? sizes.reduce((sum, size) => sum + Math.pow(size - avgSize, 2), 0) / sizes.length
     : 0;
